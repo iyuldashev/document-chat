@@ -1,14 +1,20 @@
 import { useState, useCallback } from "react";
-import { Upload, FileText, X } from "lucide-react";
+import { Upload, FileText, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast"; 
+import { Button } from "@/components/ui/button"; 
 
+// --- 1. UPDATE THE INTERFACE ---
 interface DocumentUploadProps {
   onFileSelect: (file: File | null) => void;
   selectedFile: File | null;
+  onUploadSuccess?: () => void; // <--- FIX: This line was missing!
 }
 
-export function DocumentUpload({ onFileSelect, selectedFile }: DocumentUploadProps) {
+export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: DocumentUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const { toast } = useToast();
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -24,10 +30,16 @@ export function DocumentUpload({ onFileSelect, selectedFile }: DocumentUploadPro
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file && (file.type === "application/pdf" || file.type.includes("document"))) {
+    if (file && file.type === "application/pdf") {
       onFileSelect(file);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Invalid file type",
+        description: "Please upload a PDF file.",
+      });
     }
-  }, [onFileSelect]);
+  }, [onFileSelect, toast]);
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,13 +49,54 @@ export function DocumentUpload({ onFileSelect, selectedFile }: DocumentUploadPro
   }, [onFileSelect]);
 
   const removeFile = useCallback(() => {
-    onFileSelect(null);
-  }, [onFileSelect]);
+    if (!isUploading) {
+      onFileSelect(null);
+    }
+  }, [onFileSelect, isUploading]);
 
+  // --- THE UPLOAD LOGIC ---
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Upload failed");
+
+      toast({
+        title: "Processing Started",
+        description: "Your document is being ingested.",
+      });
+
+      // --- 2. TRIGGER THE PARENT SWITCH ---
+      if (onUploadSuccess) {
+          onUploadSuccess(); 
+      }
+      
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Upload Error",
+        description: "Failed to send document to the engine.",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // --- RENDER: File Selected State ---
   if (selectedFile) {
     return (
-      <div className="w-full animate-fade-in">
-        <div className="glass rounded-2xl p-6 shadow-soft">
+      <div className="w-full animate-fade-in space-y-4">
+        <div className="glass rounded-2xl p-6 shadow-soft border border-primary/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
@@ -58,16 +111,38 @@ export function DocumentUpload({ onFileSelect, selectedFile }: DocumentUploadPro
             </div>
             <button
               onClick={removeFile}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+              disabled={isUploading}
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive disabled:opacity-50"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
         </div>
+
+        <div className="flex justify-end">
+            <Button 
+                onClick={handleUpload} 
+                disabled={isUploading}
+                className="w-full sm:w-auto"
+            >
+                {isUploading ? (
+                    <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Ingesting Document...
+                    </>
+                ) : (
+                    <>
+                        <Upload className="mr-2 h-4 w-4" />
+                        Process Document
+                    </>
+                )}
+            </Button>
+        </div>
       </div>
     );
   }
 
+  // --- RENDER: Empty State ---
   return (
     <div className="w-full animate-fade-up">
       <label
@@ -83,7 +158,7 @@ export function DocumentUpload({ onFileSelect, selectedFile }: DocumentUploadPro
       >
         <input
           type="file"
-          accept=".pdf,.doc,.docx,.txt"
+          accept=".pdf" 
           onChange={handleFileInput}
           className="hidden"
         />
@@ -99,13 +174,10 @@ export function DocumentUpload({ onFileSelect, selectedFile }: DocumentUploadPro
         </div>
         
         <p className="mb-2 text-lg font-medium text-foreground">
-          {isDragging ? "Drop your document here" : "Upload your document"}
+          {isDragging ? "Drop your PDF here" : "Upload your PDF"}
         </p>
         <p className="text-sm text-muted-foreground">
           Drag & drop or click to browse
-        </p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Supports PDF, DOC, DOCX, TXT
         </p>
       </label>
     </div>
