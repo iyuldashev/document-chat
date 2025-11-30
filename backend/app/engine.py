@@ -8,21 +8,26 @@ from llama_index.postprocessor.cohere_rerank import CohereRerank
 def get_chat_engine():
     """
     Initializes the RAG engine.
-    If no data exists yet, returns None (waiting for upload).
     """
     print("🏗️  Booting up RAG Engine...")
 
-    # 1. Check if data exists. If not, start empty.
-    if not os.path.exists("./storage_rag") or not os.path.exists("./milvus_rag.db"):
-        print("⚠️  No Knowledge Base found. Server starting in 'Empty Mode'.")
+    # 1. Check if Data Exists (Updated Logic)
+    # We ONLY check for the 'storage_rag' folder.
+    # We do NOT check for 'milvus_rag.db' because in Docker we use a URL.
+    if not os.path.exists("./storage_rag"):
+        print("⚠️  No 'storage_rag' folder found. Server starting in 'Empty Mode'.")
         print("👉  Please upload a document via the Frontend to initialize the brain.")
         return None
 
-    # 2. Connect to Milvus
+    # 2. Connect to Milvus (Dynamic)
+    milvus_uri = os.getenv("MILVUS_URI", "./milvus_rag.db")
+    print(f"🔌 Connecting to Milvus at: {milvus_uri}")
+
     vector_store = MilvusVectorStore(
-        uri="./milvus_rag.db", 
+        uri=milvus_uri, 
         dim=1536,
-        overwrite=False
+        overwrite=False,
+        token=""
     )
     
     # 3. Load DocStore
@@ -36,7 +41,7 @@ def get_chat_engine():
             embed_model=OpenAIEmbedding(model="text-embedding-3-small"),
         )
     except Exception as e:
-        print(f"❌ Error loading data: {e}")
+        print(f"❌ Error loading data from storage: {e}")
         return None
 
     # 4. Setup Reranker
@@ -46,18 +51,19 @@ def get_chat_engine():
     )
 
     # 5. Build Engine
+    # IMPROVED PROMPT: Summarization and synthesis
     query_engine = index.as_query_engine(
         similarity_top_k=10,
         node_postprocessors=[cohere_rerank],
         llm=OpenAI(model="gpt-4o-mini"),
-        system_prompt=
+        system_prompt=(
             "You are a professional AI document assistant. "
             "When answering, do not just copy-paste the text. "
             "Instead, synthesize the information into a concise, easy-to-read summary. "
             "Use bullet points for lists and bold text for key terms. "
-            "If the user asks for a comparison, create a structured comparison. "
             "Tone: Helpful, clear, and direct."
+        )
     )
     
-    print("✅ RAG Engine Loaded!")
+    print("✅ RAG Engine Loaded Successfully!")
     return query_engine
