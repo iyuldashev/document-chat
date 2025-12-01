@@ -30,6 +30,8 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [typingContent, setTypingContent] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -39,7 +41,7 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isLoading]); // Scroll on loading state change too
+  }, [messages, isLoading, typingContent]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,14 +75,31 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
 
       const data = await response.json();
 
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: data.answer,
-        sources: data.sources, 
-      };
+      // Typing effect
+      setIsTyping(true);
+      setTypingContent("");
+      const fullText = data.answer;
+      let currentIndex = 0;
 
-      setMessages((prev) => [...prev, aiMessage]);
+      const typingInterval = setInterval(() => {
+        if (currentIndex < fullText.length) {
+          setTypingContent(fullText.slice(0, currentIndex + 1));
+          currentIndex++;
+        } else {
+          clearInterval(typingInterval);
+          setIsTyping(false);
+          
+          const aiMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: "assistant",
+            content: data.answer,
+            sources: data.sources, 
+          };
+          
+          setMessages((prev) => [...prev, aiMessage]);
+          setTypingContent("");
+        }
+      }, 20);
       
     } catch (error) {
       console.error(error);
@@ -177,8 +196,21 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
           </div>
         ))}
         
+        {/* Typing Effect Bubble */}
+        {isTyping && (
+          <div className="flex gap-3 animate-fade-in">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background border border-border text-muted-foreground">
+              <Bot className="h-4 w-4" />
+            </div>
+            <div className="rounded-2xl bg-background border border-border px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap">
+              {typingContent}
+              <span className="inline-block w-0.5 h-4 bg-primary animate-pulse ml-0.5" />
+            </div>
+          </div>
+        )}
+        
         {/* Loading Bubble */}
-        {isLoading && (
+        {isLoading && !isTyping && (
           <div className="flex gap-3 animate-fade-in">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background border border-border text-muted-foreground">
               <Bot className="h-4 w-4" />
