@@ -4,11 +4,10 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast"; 
 import { Button } from "@/components/ui/button"; 
 
-// --- 1. UPDATE THE INTERFACE ---
 interface DocumentUploadProps {
   onFileSelect: (file: File | null) => void;
   selectedFile: File | null;
-  onUploadSuccess?: () => void; // <--- FIX: This line was missing!
+  onUploadSuccess?: () => void;
 }
 
 export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: DocumentUploadProps) {
@@ -54,7 +53,7 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
     }
   }, [onFileSelect, isUploading]);
 
-  // --- THE UPLOAD LOGIC ---
+  // --- THE FIXED UPLOAD LOGIC ---
   const handleUpload = async () => {
     if (!selectedFile) return;
 
@@ -63,7 +62,11 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("/api/upload", {
+      // 1. Get the dynamic URL (Cloud vs Local)
+      const API_BASE = import.meta.env.VITE_API_URL || "/api";
+      
+      // 2. Use the dynamic URL
+      const response = await fetch(`${API_BASE}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -75,7 +78,6 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
         description: "Your document is being ingested.",
       });
 
-      // --- 2. TRIGGER THE PARENT SWITCH ---
       if (onUploadSuccess) {
           onUploadSuccess(); 
       }

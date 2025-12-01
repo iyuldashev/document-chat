@@ -57,11 +57,17 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      // --- FIX START ---
+      // 1. Determine the URL (Local vs Cloud)
+      const API_BASE = import.meta.env.VITE_API_URL || "/api";
+      
+      // 2. Use the dynamic URL
+      const response = await fetch(`${API_BASE}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessageContent }),
       });
+      // --- FIX END ---
 
       if (!response.ok) throw new Error("Failed to fetch response");
 
