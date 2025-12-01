@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FileText, Zap, Shield, MessageSquare, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DocumentUpload } from "@/components/DocumentUpload";
@@ -26,6 +26,11 @@ const features = [
 const Index = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessed, setIsProcessed] = useState(false);
+  const uploadSectionRef = useRef<HTMLDivElement>(null);
+
+  const handleGetStarted = () => {
+    uploadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
@@ -76,12 +81,9 @@ const Index = () => {
 
             {!selectedFile && (
               <div className="flex flex-wrap items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: "300ms" }}>
-                <Button variant="hero" size="xl">
+                <Button variant="hero" size="xl" onClick={handleGetStarted}>
                   Get Started Free
                   <ArrowRight className="h-5 w-5" />
-                </Button>
-                <Button variant="outline" size="lg">
-                  Watch Demo
                 </Button>
               </div>
             )}
@@ -90,7 +92,7 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl" ref={uploadSectionRef}>
           {/* THE SWITCH LOGIC */}
           {isProcessed ? (
             <ChatInterface documentName={selectedFile?.name || "Document"} />
@@ -125,9 +127,25 @@ const Index = () => {
 
       <footer className="border-t border-border bg-muted/30">
         <div className="container mx-auto px-4 py-8">
-          <p className="text-sm text-muted-foreground text-center">
-            © 2024 DocChat. All rights reserved.
-          </p>
+          <div className="text-center space-y-2">
+            <p className="text-sm font-medium text-foreground">
+              © 2025 Fergani Labs
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+              <a href="mailto:yuldashev.dev@gmail.com" className="hover:text-primary transition-colors">
+                yuldashev.dev@gmail.com
+              </a>
+              <a href="https://linkedin.com/in/iyuldashev" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                LinkedIn
+              </a>
+              <a href="https://github.com/iyuldashev" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                Github
+              </a>
+              <a href="https://t.me/yuldashev_dev" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                Telegram
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
