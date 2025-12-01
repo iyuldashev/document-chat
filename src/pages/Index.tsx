@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { FileText, Zap, Shield, MessageSquare, ArrowRight, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { FileText, Zap, Shield, MessageSquare, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DocumentUpload } from "@/components/DocumentUpload";
-import {ChatInterface} from "@/components/ChatInterface"; // Note: Ensure this import matches your file structure
+import {ChatInterface} from "@/components/ChatInterface";
 import { FeatureCard } from "@/components/FeatureCard";
-import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
 
 const features = [
   {
@@ -29,26 +26,6 @@ const features = [
 const Index = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessed, setIsProcessed] = useState(false);
-  
-  const { user, signOut } = useAuth();
-  const { toast } = useToast();
-  const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    const { error } = await signOut();
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
-    } else {
-      toast({
-        title: "Signed out",
-        description: "You've been signed out successfully",
-      });
-    }
-  };
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
@@ -75,21 +52,9 @@ const Index = () => {
               </div>
               <span className="text-xl font-bold text-foreground">DocChat</span>
             </div>
-            {user ? (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-muted-foreground">
-                  {user.email}
-                </span>
-                <Button variant="ghost" size="sm" onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign out
-                </Button>
-              </div>
-            ) : (
-              <Button variant="ghost" size="sm" onClick={() => navigate("/auth")}>
-                Sign in
-              </Button>
-            )}
+            <div className="text-sm text-muted-foreground">
+              Demo Version - Free to Use
+            </div>
           </nav>
 
           <div className="mx-auto max-w-4xl text-center">
