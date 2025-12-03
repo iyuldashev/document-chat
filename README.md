@@ -1,73 +1,27 @@
-# Welcome to your Lovable project
+# 📄 DocChat - Enterprise-Grade RAG Application
 
-## Project info
+DocChat is a full-stack AI application that allows users to upload complex PDF documents (financial reports, technical manuals, etc.) and chat with them in real-time. 
 
-**URL**: https://lovable.dev/projects/13dcf781-a666-4741-a318-d2bf4d92be94
+Unlike basic PDF chat apps, DocChat uses a **Two-Stage Retrieval Pipeline (Hybrid Search + Reranking)** and **Vision-Aware Parsing** to handle complex tables and layouts accurately.
 
-## How can I edit this code?
+![Project Status](https://img.shields.io/badge/Status-Production-success)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
+![Python](https://img.shields.io/badge/Backend-FastAPI-009688)
+![React](https://img.shields.io/badge/Frontend-React-61DAFB)
 
-There are several ways of editing your application.
+## 🏗️ Architecture
 
-**Use Lovable**
+The system is designed as a decoupled microservices architecture:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/13dcf781-a666-4741-a318-d2bf4d92be94) and start prompting.
+* **Frontend:** React + Vite + Tailwind (Deployed on **Vercel**).
+* **Backend:** FastAPI (Python) running in a Docker container (Deployed on **Google Cloud Run**).
+* **Database:** Milvus Vector Database (Managed **Zilliz Cloud**).
+* **Orchestration:** LlamaIndex.
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/13dcf781-a666-4741-a318-d2bf4d92be94) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### The RAG Pipeline
+1.  **Ingestion:** PDFs are parsed using **LlamaParse** (Vision-Language Model) to preserve table structures.
+2.  **Chunking:** Content is split using a sliding window strategy (1024 tokens) to maintain context.
+3.  **Embedding:** Text is converted to vectors using `text-embedding-3-small`.
+4.  **Retrieval:** Top-k semantic matches are fetched from Milvus.
+5.  **Reranking:** **Cohere Rerank** re-scores the retrieved chunks to filter out noise.
+6.  **Synthesis:** LLM models generates the final answer with **collapsible source citations**.
