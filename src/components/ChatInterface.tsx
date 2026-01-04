@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Sparkles, FileText, ChevronRight, Save } from "lucide-react";
+import { Send, MessageSquareText, User, Sparkles, FileText, ChevronRight, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -313,7 +313,7 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
                       : "bg-background border border-border text-muted-foreground"
                   )}
                 >
-                  {message.role === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  {message.role === "user" ? <User className="h-4 w-4" /> : <MessageSquareText className="h-4 w-4" />}
                 </div>
 
                 {/* Content Container */}
@@ -367,7 +367,7 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
             {isTyping && (
               <div className="flex gap-3 animate-fade-in">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background border border-border text-muted-foreground">
-                  <Bot className="h-4 w-4" />
+                  <MessageSquareText className="h-4 w-4" />
                 </div>
                 <div className="rounded-2xl bg-background border border-border px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap">
                   {typingContent}
@@ -380,7 +380,7 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
             {isLoading && !isTyping && (
               <div className="flex gap-3 animate-fade-in">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background border border-border text-muted-foreground">
-                  <Bot className="h-4 w-4" />
+                  <MessageSquareText className="h-4 w-4" />
                 </div>
                 <div className="rounded-2xl bg-muted/50 px-4 py-3 flex items-center gap-1">
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50" />
