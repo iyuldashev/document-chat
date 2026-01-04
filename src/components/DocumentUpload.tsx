@@ -53,7 +53,6 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
     }
   }, [onFileSelect, isUploading]);
 
-  // --- THE FIXED UPLOAD LOGIC ---
   const handleUpload = async () => {
     if (!selectedFile) return;
 
@@ -62,10 +61,8 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
     formData.append("file", selectedFile);
 
     try {
-      // 1. Get the dynamic URL (Cloud vs Local)
       const API_BASE = import.meta.env.VITE_API_URL || "/api";
       
-      // 2. Use the dynamic URL
       const response = await fetch(`${API_BASE}/upload`, {
         method: "POST",
         body: formData,
@@ -94,11 +91,11 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
     }
   };
 
-  // --- RENDER: File Selected State ---
+  // File Selected State
   if (selectedFile) {
     return (
       <div className="w-full animate-fade-in space-y-4">
-        <div className="glass rounded-2xl p-6 shadow-soft border border-primary/10">
+        <div className="rounded-2xl p-5 bg-card border border-border shadow-soft">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
@@ -121,38 +118,37 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
           </div>
         </div>
 
-        <div className="flex justify-end">
-            <Button 
-                onClick={handleUpload} 
-                disabled={isUploading}
-                className="w-full sm:w-auto"
-            >
-                {isUploading ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Ingesting Document...
-                    </>
-                ) : (
-                    <>
-                        <Upload className="mr-2 h-4 w-4" />
-                        Process Document
-                    </>
-                )}
-            </Button>
-        </div>
+        <Button 
+          onClick={handleUpload} 
+          disabled={isUploading}
+          className="w-full"
+          size="lg"
+        >
+          {isUploading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Ingesting Document...
+            </>
+          ) : (
+            <>
+              <Upload className="mr-2 h-4 w-4" />
+              Process Document
+            </>
+          )}
+        </Button>
       </div>
     );
   }
 
-  // --- RENDER: Empty State ---
+  // Empty State
   return (
-    <div className="w-full animate-fade-up">
+    <div className="w-full">
       <label
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={cn(
-          "group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-12 transition-all duration-300",
+          "group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 transition-all duration-300",
           isDragging
             ? "border-primary bg-primary/5 shadow-glow"
             : "border-border bg-card hover:border-primary/50 hover:bg-accent/30"
@@ -166,16 +162,16 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
         />
         
         <div className={cn(
-          "mb-4 flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300",
+          "mb-4 flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300",
           isDragging ? "bg-primary/20 scale-110" : "bg-muted group-hover:bg-primary/10"
         )}>
           <Upload className={cn(
-            "h-8 w-8 transition-colors duration-300",
+            "h-7 w-7 transition-colors duration-300",
             isDragging ? "text-primary" : "text-muted-foreground group-hover:text-primary"
           )} />
         </div>
         
-        <p className="mb-2 text-lg font-medium text-foreground">
+        <p className="mb-2 text-base font-medium text-foreground">
           {isDragging ? "Drop your PDF here" : "Upload your PDF"}
         </p>
         <p className="text-sm text-muted-foreground">

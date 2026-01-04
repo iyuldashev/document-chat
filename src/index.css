@@ -4,100 +4,102 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 220 20% 10%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 240 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 240 10% 10%;
 
-    --primary: 175 70% 40%;
+    --primary: 263 70% 58%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 220 20% 20%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 20%;
 
-    --muted: 210 15% 94%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 5% 45%;
 
-    --accent: 175 60% 95%;
-    --accent-foreground: 175 70% 30%;
+    --accent: 263 50% 95%;
+    --accent-foreground: 263 70% 50%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 175 70% 40%;
+    --border: 240 5% 90%;
+    --input: 240 5% 90%;
+    --ring: 263 70% 58%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(175 70% 40% / 0.1), hsl(200 80% 50% / 0.05));
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 20% 98%));
-    --gradient-accent: linear-gradient(135deg, hsl(175 70% 40%), hsl(200 80% 50%));
-    --shadow-soft: 0 4px 24px -4px hsl(220 20% 10% / 0.08);
-    --shadow-glow: 0 0 40px hsl(175 70% 40% / 0.2);
-    --glass-bg: hsl(0 0% 100% / 0.7);
-    --glass-border: hsl(0 0% 100% / 0.3);
+    --gradient-hero: linear-gradient(135deg, hsl(280 60% 70% / 0.4), hsl(200 80% 70% / 0.3), hsl(180 60% 70% / 0.2));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(240 5% 98%));
+    --gradient-accent: linear-gradient(135deg, hsl(263 70% 58%), hsl(280 70% 65%));
+    --shadow-soft: 0 4px 24px -4px hsl(240 10% 10% / 0.08);
+    --shadow-glow: 0 0 40px hsl(263 70% 58% / 0.2);
+    --glass-bg: hsl(0 0% 100% / 0.8);
+    --glass-border: hsl(0 0% 100% / 0.5);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 240 6% 20%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 263 70% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 28%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 240 5% 28%;
+    --sidebar-ring: 263 70% 58%;
+    --sidebar-muted: 240 5% 55%;
   }
 
   .dark {
-    --background: 220 20% 8%;
-    --foreground: 210 20% 98%;
+    --background: 240 10% 6%;
+    --foreground: 0 0% 98%;
 
-    --card: 220 20% 12%;
-    --card-foreground: 210 20% 98%;
+    --card: 240 10% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 220 20% 12%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 175 70% 45%;
-    --primary-foreground: 220 20% 8%;
+    --primary: 263 70% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 240 6% 18%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 220 15% 18%;
-    --muted-foreground: 210 15% 55%;
+    --muted: 240 6% 18%;
+    --muted-foreground: 240 5% 55%;
 
-    --accent: 175 50% 15%;
-    --accent-foreground: 175 70% 70%;
+    --accent: 263 40% 20%;
+    --accent-foreground: 263 70% 75%;
 
     --destructive: 0 62% 30%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 175 70% 45%;
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 263 70% 60%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(175 70% 40% / 0.15), hsl(200 80% 50% / 0.1));
-    --gradient-card: linear-gradient(180deg, hsl(220 20% 14%), hsl(220 20% 10%));
-    --gradient-accent: linear-gradient(135deg, hsl(175 70% 45%), hsl(200 80% 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(280 50% 40% / 0.5), hsl(200 60% 50% / 0.3), hsl(180 50% 40% / 0.2));
+    --gradient-card: linear-gradient(180deg, hsl(240 10% 12%), hsl(240 10% 8%));
+    --gradient-accent: linear-gradient(135deg, hsl(263 70% 60%), hsl(280 70% 70%));
     --shadow-soft: 0 4px 24px -4px hsl(0 0% 0% / 0.3);
-    --shadow-glow: 0 0 40px hsl(175 70% 45% / 0.3);
-    --glass-bg: hsl(220 20% 12% / 0.7);
-    --glass-border: hsl(220 20% 20% / 0.3);
+    --shadow-glow: 0 0 40px hsl(263 70% 60% / 0.3);
+    --glass-bg: hsl(240 10% 10% / 0.8);
+    --glass-border: hsl(240 10% 20% / 0.5);
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 240 6% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 263 70% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 240 5% 20%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 240 5% 18%;
+    --sidebar-ring: 263 70% 60%;
+    --sidebar-muted: 240 5% 50%;
   }
 }
 
@@ -122,6 +124,14 @@
 
   .gradient-accent {
     background: var(--gradient-accent);
+  }
+
+  .gradient-mesh {
+    background: 
+      radial-gradient(at 20% 20%, hsl(280 60% 60% / 0.3) 0%, transparent 50%),
+      radial-gradient(at 80% 20%, hsl(200 70% 60% / 0.25) 0%, transparent 50%),
+      radial-gradient(at 50% 80%, hsl(180 50% 60% / 0.2) 0%, transparent 50%),
+      linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
   }
 
   .shadow-soft {
@@ -152,6 +162,10 @@
 
   .animate-fade-in {
     animation: fade-in 0.4s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out forwards;
   }
 }
 
@@ -190,5 +204,16 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
