@@ -1,6 +1,6 @@
-# 📄 DocChat - Enterprise-Grade RAG Application
+# 📄 DocMind - Enterprise-Grade RAG Application
 
-DocChat is a full-stack AI application that allows users to upload complex PDF documents (financial reports, technical manuals, etc.) and chat with them in real-time. 
+DocMind is a full-stack AI application that allows users to upload complex PDF documents (financial reports, technical manuals, etc.) and chat with them in real-time.
 
 Unlike basic PDF chat apps, DocChat uses a **Two-Stage Retrieval Pipeline (Hybrid Search + Reranking)** and **Vision-Aware Parsing** to handle complex tables and layouts accurately.
 

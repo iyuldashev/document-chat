@@ -436,7 +436,7 @@ export function MainContent({
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask DocChat AI..."
+              placeholder="Ask DocMind AI..."
               className="flex-1 bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
               disabled={isLoading}
             />
