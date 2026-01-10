@@ -60,7 +60,7 @@ const Auth = () => {
             <FileText className="h-7 w-7 text-primary-foreground" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">
-            Welcome to DocChat
+            Welcome to DocMind
           </h1>
           <p className="mt-2 text-muted-foreground">
             {isSignUp ? "Create an account to save your chat history" : "Sign in to access your saved chats"}

@@ -150,7 +150,7 @@ export function AppSidebar({
           <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-accent">
             <FileText className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-semibold text-sidebar-foreground">DocChat</span>
+          <span className="text-lg font-semibold text-sidebar-foreground">DocMind</span>
         </div>
         <button
           onClick={onToggleCollapse}
@@ -180,7 +180,7 @@ export function AppSidebar({
         </button>
         <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors text-sm">
           <Globe className="h-4 w-4" />
-          Explore DocChat AI
+          Explore DocMind AI
         </button>
       </nav>
 
@@ -255,7 +255,7 @@ export function AppSidebar({
         <div className="mx-3 mt-auto mb-4 p-4 rounded-xl bg-sidebar-accent/50 border border-sidebar-border">
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="h-4 w-4 text-sidebar-primary" />
-            <span className="text-sm font-medium text-sidebar-foreground">DocChat Pro</span>
+            <span className="text-sm font-medium text-sidebar-foreground">DocMind Pro</span>
           </div>
           <p className="text-xs text-sidebar-muted mb-3">
             Save your chats and access them anywhere

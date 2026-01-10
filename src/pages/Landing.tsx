@@ -14,7 +14,7 @@ export default function Landing() {
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <FileText className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-lg">DocChat</span>
+            <span className="font-semibold text-lg">DocMind</span>
           </div>
           <Button onClick={() => navigate("/chat")} size="sm">
             Get Started
@@ -93,7 +93,7 @@ export default function Landing() {
             Upload your first document and experience the future of document interaction.
           </p>
           <Button size="lg" onClick={() => navigate("/chat")} className="gap-2">
-            Try DocChat Free
+            Try DocMind Free
             <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
@@ -102,7 +102,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="border-t border-border/50 py-8 px-6">
         <div className="mx-auto max-w-6xl flex items-center justify-between text-sm text-muted-foreground">
-          <span>© 2024 DocChat</span>
+          <span>© 2024 DocMind</span>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
             <a href="#" className="hover:text-foreground transition-colors">Terms</a>
