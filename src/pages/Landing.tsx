@@ -147,7 +147,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="border-t border-border/50 py-8 px-6">
         <div className="mx-auto max-w-6xl flex items-center justify-between text-sm text-muted-foreground">
-          <span>© 2024 DocMind</span>
+          <span>© 2026 DocMind</span>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
             <a href="#" className="hover:text-foreground transition-colors">Terms</a>
