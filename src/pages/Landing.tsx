@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoPreview } from "@/components/landing/DemoPreview";
 import { HowItWorks } from "@/components/landing/HowItWorks";
-import { StatsSection } from "@/components/landing/StatsSection";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -92,10 +91,6 @@ export default function Landing() {
 
       {/* How It Works */}
       <HowItWorks />
-
-      {/* Stats Section */}
-      <StatsSection />
-
       {/* Features Section */}
       <section className="py-20 px-6 border-t border-border/50">
         <div className="mx-auto max-w-5xl">
