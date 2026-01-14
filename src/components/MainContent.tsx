@@ -88,6 +88,18 @@ export function MainContent({
     }
   }, [isProcessed, documentName]);
 
+  // Reset state when starting a new chat (currentSessionId becomes null)
+  useEffect(() => {
+    if (currentSessionId === null && documentName === null) {
+      setMessages([]);
+      setInput("");
+      setSelectedFile(null);
+      setIsProcessed(false);
+      setTypingContent("");
+      setIsTyping(false);
+    }
+  }, [currentSessionId, documentName]);
+
   const createSession = async () => {
     if (!user) return null;
     
