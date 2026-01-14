@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, FileText, MessageSquare, Zap, Shield } from "lucide-react";
+import { ArrowRight, FileText, MessageSquare, Zap, Shield, Linkedin, Github, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -146,8 +146,37 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="border-t border-border/50 py-8 px-6">
-        <div className="mx-auto max-w-6xl flex items-center justify-between text-sm text-muted-foreground">
+        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>© 2026 DocMind</span>
+          <div className="flex items-center gap-4">
+            <a 
+              href="https://www.linkedin.com/in/iyuldashev/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+              title="LinkedIn"
+            >
+              <Linkedin className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://github.com/iyuldashev" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+              title="GitHub"
+            >
+              <Github className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://t.me/yuldashev_dev" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+              title="Telegram"
+            >
+              <Send className="h-5 w-5" />
+            </a>
+          </div>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
             <a href="#" className="hover:text-foreground transition-colors">Terms</a>
