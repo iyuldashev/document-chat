@@ -20,7 +20,7 @@ The system is designed as a decoupled microservices architecture:
 * **Backend:** FastAPI (Python) running in a Docker container (Deployed on **AWS EC2**).
 * **Database:** Milvus Standalone Vector Database + MinIO + Etcd (Self-hosted via Docker Compose on **AWS EC2** with local persistence volumes).
 * **Orchestration:** LlamaIndex.
-* **SSL & Reverse Proxy:** **Caddy** handles automatic Let's Encrypt SSL certificates and forwards traffic to the backend container (routing through `https://api.fergani-labs.com`).
+* **SSL & Reverse Proxy:** **Caddy** handles automatic Let's Encrypt SSL certificates and forwards traffic to the backend container.
 
 ---
 
