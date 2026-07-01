@@ -371,10 +371,10 @@ export function MainContent({
                 {/* Text Bubble */}
                 <div
                   className={cn(
-                    "rounded-2xl px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap",
+                    "text-sm leading-relaxed whitespace-pre-wrap",
                     message.role === "user"
-                      ? "gradient-accent text-primary-foreground"
-                      : "bg-card border border-border text-foreground"
+                      ? "rounded-2xl px-5 py-3 shadow-sm gradient-accent text-primary-foreground"
+                      : "text-foreground py-2"
                   )}
                 >
                   {message.content}
@@ -415,7 +415,7 @@ export function MainContent({
           {/* Typing Effect */}
           {isTyping && (
             <div className="flex gap-3 animate-fade-in">
-              <div className="rounded-2xl bg-card border border-border px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap">
+              <div className="text-sm leading-relaxed whitespace-pre-wrap text-foreground py-2">
                 {typingContent}
                 <span className="inline-block w-0.5 h-4 bg-primary animate-pulse ml-0.5" />
               </div>
@@ -425,7 +425,7 @@ export function MainContent({
           {/* Loading */}
           {isLoading && !isTyping && (
             <div className="flex gap-3 animate-fade-in">
-              <div className="rounded-2xl bg-muted/50 px-4 py-3 flex items-center gap-1">
+              <div className="py-2 flex items-center gap-1">
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.2s]" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.4s]" />
