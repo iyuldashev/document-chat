@@ -250,26 +250,6 @@ export function AppSidebar({
         </div>
       )}
 
-      {/* Pro Banner (for non-logged users) */}
-      {!user && (
-        <div className="mx-3 mt-auto mb-4 p-4 rounded-xl bg-sidebar-accent/50 border border-sidebar-border">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="h-4 w-4 text-sidebar-primary" />
-            <span className="text-sm font-medium text-sidebar-foreground">DocMind Pro</span>
-          </div>
-          <p className="text-xs text-sidebar-muted mb-3">
-            Save your chats and access them anywhere
-          </p>
-          <Button 
-            onClick={onShowLogin}
-            size="sm" 
-            className="w-full"
-          >
-            Sign In
-          </Button>
-        </div>
-      )}
-
       {/* User Info */}
       {user && (
         <div className="p-3 border-t border-sidebar-border mt-auto">

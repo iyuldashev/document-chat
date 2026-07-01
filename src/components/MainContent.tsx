@@ -184,14 +184,6 @@ export function MainContent({
     setInput("");
     setIsLoading(true);
 
-    // Show login modal after first message if not logged in
-    if (!user && !hasPromptedLogin && messages.length >= 1) {
-      setHasPromptedLogin(true);
-      setTimeout(() => {
-        onShowLogin();
-      }, 500);
-    }
-
     // Save message if logged in
     let sessionId = currentSessionId;
     if (user) {

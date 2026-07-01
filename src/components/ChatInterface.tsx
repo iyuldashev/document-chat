@@ -175,14 +175,6 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
     setInput("");
     setIsLoading(true);
 
-    // Show login modal after first message if not logged in
-    if (!user && !hasPromptedLogin && messages.length >= 1) {
-      setHasPromptedLogin(true);
-      setTimeout(() => {
-        setShowLoginModal(true);
-      }, 500);
-    }
-
     // Save message if logged in
     let sessionId = currentSessionId;
     if (user) {
@@ -281,17 +273,6 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
                 <p className="text-sm text-muted-foreground">Chatting about: {documentName}</p>
               </div>
             </div>
-            {!user && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={() => setShowLoginModal(true)}
-              >
-                <Save className="h-4 w-4" />
-                Save Chats
-              </Button>
-            )}
           </div>
 
           {/* Messages Area */}
