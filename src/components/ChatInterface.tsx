@@ -270,7 +270,7 @@ export function ChatInterface({ documentName }: ChatInterfaceProps) {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Document Assistant</h3>
-                <p className="text-sm text-muted-foreground">Chatting about: {documentName}</p>
+                <p className="text-sm text-muted-foreground">{documentName}</p>
               </div>
             </div>
           </div>
