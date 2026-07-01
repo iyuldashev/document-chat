@@ -9,6 +9,7 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - COHERE_API_KEY=${COHERE_API_KEY}
+      - LLAMA_CLOUD_API_KEY=${LLAMA_CLOUD_API_KEY}
       - MILVUS_URI=http://milvus-standalone:19530  # Points to the container below
     depends_on:
       - milvus-standalone
