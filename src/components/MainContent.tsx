@@ -67,8 +67,21 @@ export function MainContent({
   const [isTyping, setIsTyping] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessed, setIsProcessed] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (selectedFile) {
+      const url = URL.createObjectURL(selectedFile);
+      setPdfUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+      };
+    } else {
+      setPdfUrl(null);
+    }
+  }, [selectedFile]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -315,160 +328,174 @@ export function MainContent({
 
   // Chat State (document uploaded)
   return (
-    <div className="flex-1 flex flex-col h-full overflow-hidden">
-      {/* Gradient Header */}
-      <div className="relative h-20 gradient-mesh shrink-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
-        <div className="absolute bottom-4 left-6 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-accent shadow-soft">
-            <Sparkles className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-foreground">Document Assistant</h3>
-            <p className="text-sm text-muted-foreground">Chatting about: {documentName}</p>
+    <div className="flex-1 flex h-full overflow-hidden">
+      {/* Left Column: PDF Preview */}
+      {pdfUrl && (
+        <div className="hidden lg:block w-1/2 h-full border-r border-border bg-card">
+          <iframe
+            src={pdfUrl}
+            className="w-full h-full border-none"
+            title="Document Preview"
+          />
+        </div>
+      )}
+
+      {/* Right Column: Chat interface */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Gradient Header */}
+        <div className="relative h-20 gradient-mesh shrink-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
+          <div className="absolute bottom-4 left-6 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-accent shadow-soft">
+              <Sparkles className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">Document Assistant</h3>
+              <p className="text-sm text-muted-foreground">Chatting about: {documentName}</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={cn(
-              "flex gap-3 animate-fade-in",
-              message.role === "user" ? "flex-row-reverse" : "flex-row"
-            )}
-          >
-            {/* Avatar */}
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+          {messages.map((message) => (
             <div
+              key={message.id}
               className={cn(
-                "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm",
-                message.role === "user"
-                  ? "gradient-accent"
-                  : "bg-card border border-border"
+                "flex gap-3 animate-fade-in",
+                message.role === "user" ? "flex-row-reverse" : "flex-row"
               )}
             >
-              {message.role === "user" ? (
-                <User className="h-4 w-4 text-primary-foreground" />
-              ) : (
-                <Bot className="h-4 w-4 text-muted-foreground" />
-              )}
-            </div>
-
-            {/* Content Container */}
-            <div className={`flex flex-col gap-2 max-w-[80%]`}>
-              {/* Text Bubble */}
+              {/* Avatar */}
               <div
                 className={cn(
-                  "rounded-2xl px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap",
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm",
                   message.role === "user"
-                    ? "gradient-accent text-primary-foreground"
-                    : "bg-card border border-border text-foreground"
+                    ? "gradient-accent"
+                    : "bg-card border border-border"
                 )}
               >
-                {message.content}
+                {message.role === "user" ? (
+                  <User className="h-4 w-4 text-primary-foreground" />
+                ) : (
+                  <Bot className="h-4 w-4 text-muted-foreground" />
+                )}
               </div>
 
-              {/* Sources */}
-              {message.sources && message.sources.length > 0 && (
-                <div className="animate-fade-in ml-1">
-                  <details className="group">
-                    <summary className="list-none flex items-center gap-2 text-xs font-medium text-muted-foreground/70 hover:text-primary cursor-pointer transition-colors w-fit select-none">
-                      <div className="flex items-center justify-center w-4 h-4 rounded bg-muted">
-                        <ChevronRight className="h-3 w-3 transition-transform group-open:rotate-90" />
-                      </div>
-                      <span className="flex items-center gap-1">
-                        <FileText className="h-3 w-3" />
-                        View {message.sources.length} Sources
-                      </span>
-                    </summary>
-                    
-                    <div className="mt-2 space-y-2 pl-1">
-                      {message.sources.map((source, idx) => (
-                        <div 
-                          key={idx} 
-                          className="bg-muted/40 border border-border/50 rounded-lg p-3 text-xs text-muted-foreground leading-relaxed hover:bg-muted/60 transition-colors"
-                        >
-                          <span className="font-semibold text-primary/80 mr-1">[{idx + 1}]</span>
-                          "{source.text}"
-                        </div>
-                      ))}
-                    </div>
-                  </details>
+              {/* Content Container */}
+              <div className={`flex flex-col gap-2 max-w-[80%]`}>
+                {/* Text Bubble */}
+                <div
+                  className={cn(
+                    "rounded-2xl px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap",
+                    message.role === "user"
+                      ? "gradient-accent text-primary-foreground"
+                      : "bg-card border border-border text-foreground"
+                  )}
+                >
+                  {message.content}
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
-        
-        {/* Typing Effect */}
-        {isTyping && (
-          <div className="flex gap-3 animate-fade-in">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card border border-border">
-              <Bot className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="rounded-2xl bg-card border border-border px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap">
-              {typingContent}
-              <span className="inline-block w-0.5 h-4 bg-primary animate-pulse ml-0.5" />
-            </div>
-          </div>
-        )}
-        
-        {/* Loading */}
-        {isLoading && !isTyping && (
-          <div className="flex gap-3 animate-fade-in">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card border border-border">
-              <Bot className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="rounded-2xl bg-muted/50 px-4 py-3 flex items-center gap-1">
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50" />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.2s]" />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.4s]" />
-            </div>
-          </div>
-        )}
-        
-        <div ref={messagesEndRef} />
-      </div>
 
-      {/* Input Area */}
-      <div className="p-4 bg-background border-t border-border">
-        <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-          <div className="relative flex items-center gap-2 p-2 rounded-2xl border border-border bg-card shadow-soft">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask DocMind AI..."
-              className="flex-1 bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-              disabled={isLoading}
-            />
-            
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground"
-              >
-                <Paperclip className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground"
-              >
-                <Globe className="h-5 w-5" />
-              </button>
-              <Button 
-                type="submit" 
-                size="icon"
-                disabled={!input.trim() || isLoading}
-                className="rounded-xl h-10 w-10"
-              >
-                <Send className="h-4 w-4" />
-              </Button>
+                {/* Sources */}
+                {message.sources && message.sources.length > 0 && (
+                  <div className="animate-fade-in ml-1">
+                    <details className="group">
+                      <summary className="list-none flex items-center gap-2 text-xs font-medium text-muted-foreground/70 hover:text-primary cursor-pointer transition-colors w-fit select-none">
+                        <div className="flex items-center justify-center w-4 h-4 rounded bg-muted">
+                          <ChevronRight className="h-3 w-3 transition-transform group-open:rotate-90" />
+                        </div>
+                        <span className="flex items-center gap-1">
+                          <FileText className="h-3 w-3" />
+                          View {message.sources.length} Sources
+                        </span>
+                      </summary>
+                      
+                      <div className="mt-2 space-y-2 pl-1">
+                        {message.sources.map((source, idx) => (
+                          <div 
+                            key={idx} 
+                            className="bg-muted/40 border border-border/50 rounded-lg p-3 text-xs text-muted-foreground leading-relaxed hover:bg-muted/60 transition-colors"
+                          >
+                            <span className="font-semibold text-primary/80 mr-1">[{idx + 1}]</span>
+                            "{source.text}"
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </form>
+          ))}
+          
+          {/* Typing Effect */}
+          {isTyping && (
+            <div className="flex gap-3 animate-fade-in">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card border border-border">
+                <Bot className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div className="rounded-2xl bg-card border border-border px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap">
+                {typingContent}
+                <span className="inline-block w-0.5 h-4 bg-primary animate-pulse ml-0.5" />
+              </div>
+            </div>
+          )}
+          
+          {/* Loading */}
+          {isLoading && !isTyping && (
+            <div className="flex gap-3 animate-fade-in">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card border border-border">
+                <Bot className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div className="rounded-2xl bg-muted/50 px-4 py-3 flex items-center gap-1">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.2s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.4s]" />
+              </div>
+            </div>
+          )}
+          
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area */}
+        <div className="p-4 bg-background border-t border-border">
+          <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
+            <div className="relative flex items-center gap-2 p-2 rounded-2xl border border-border bg-card shadow-soft">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask DocMind AI..."
+                className="flex-1 bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                disabled={isLoading}
+              />
+              
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground"
+                >
+                  <Paperclip className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground"
+                >
+                  <Globe className="h-5 w-5" />
+                </button>
+                <Button 
+                  type="submit" 
+                  size="icon"
+                  disabled={!input.trim() || isLoading}
+                  className="rounded-xl h-10 w-10"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
