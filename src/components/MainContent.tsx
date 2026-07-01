@@ -366,22 +366,6 @@ export function MainContent({
                 message.role === "user" ? "flex-row-reverse" : "flex-row"
               )}
             >
-              {/* Avatar */}
-              <div
-                className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm",
-                  message.role === "user"
-                    ? "gradient-accent"
-                    : "bg-card border border-border"
-                )}
-              >
-                {message.role === "user" ? (
-                  <User className="h-4 w-4 text-primary-foreground" />
-                ) : (
-                  <Bot className="h-4 w-4 text-muted-foreground" />
-                )}
-              </div>
-
               {/* Content Container */}
               <div className={`flex flex-col gap-2 max-w-[80%]`}>
                 {/* Text Bubble */}
@@ -431,9 +415,6 @@ export function MainContent({
           {/* Typing Effect */}
           {isTyping && (
             <div className="flex gap-3 animate-fade-in">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card border border-border">
-                <Bot className="h-4 w-4 text-muted-foreground" />
-              </div>
               <div className="rounded-2xl bg-card border border-border px-5 py-3 shadow-sm text-sm leading-relaxed whitespace-pre-wrap">
                 {typingContent}
                 <span className="inline-block w-0.5 h-4 bg-primary animate-pulse ml-0.5" />
@@ -444,9 +425,6 @@ export function MainContent({
           {/* Loading */}
           {isLoading && !isTyping && (
             <div className="flex gap-3 animate-fade-in">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card border border-border">
-                <Bot className="h-4 w-4 text-muted-foreground" />
-              </div>
               <div className="rounded-2xl bg-muted/50 px-4 py-3 flex items-center gap-1">
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50" />
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/50 [animation-delay:0.2s]" />
