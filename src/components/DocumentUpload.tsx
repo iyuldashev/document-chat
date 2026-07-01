@@ -72,7 +72,38 @@ export function DocumentUpload({ onFileSelect, selectedFile, onUploadSuccess }: 
 
       toast({
         title: "Processing Started",
-        description: "Your document is being ingested.",
+        description: "Analyzing document structure (this may take up to a minute)...",
+      });
+
+      // Poll `/health` until `engine_loaded` is true
+      let loaded = false;
+      const maxAttempts = 30; // 60 seconds timeout
+      let attempts = 0;
+      
+      while (!loaded && attempts < maxAttempts) {
+        attempts++;
+        // Wait 2 seconds between checks
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        try {
+          const healthRes = await fetch(`${API_BASE}/health`);
+          if (healthRes.ok) {
+            const healthData = await healthRes.json();
+            if (healthData.engine_loaded === true) {
+              loaded = true;
+            }
+          }
+        } catch (e) {
+          console.error("Error checking engine health:", e);
+        }
+      }
+
+      if (!loaded) {
+        throw new Error("Analyzing document timed out on the server. Please try again.");
+      }
+
+      toast({
+        title: "Analysis Complete",
+        description: "Your document is parsed and ready to chat!",
       });
 
       if (onUploadSuccess) {
